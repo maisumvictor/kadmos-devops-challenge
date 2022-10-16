@@ -14,15 +14,14 @@
 - DDoS attack protection 
 
 
-## Tooling decision: 
+## Required tools
+**Gcloud** : Google Cloud SDK 405.0.0
 
-**Kubernetes** <br>
-In order to run the kubernetes I choose to use Kind. The cluster configuration can be found at the Kubernetes directory at get-start.md
+**Kubernetes** : Powered by GKE --> 
 
-**Terraform**
-Initialy I think to run terraform over GCP. 
+**Terraform** : Provider Google Cloud Platform
 
-**Ansible** 
+**Ansible** : 
 
 
 
