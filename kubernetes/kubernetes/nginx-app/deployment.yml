@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nyan-cat
+  namespace: nyan-cat
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nyan-cat
+  template:
+    metadata:
+      labels: # labels to select/identify the deployment
+        app: nyan-cat
+    spec:
+      containers:
+      - name: nyan-cat
+        image: public.ecr.aws/pahudnet/nyancat-docker-image:latest
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "100m"
+          limits:
+            memory: "120Mi"
+            cpu: "100m"
+        ports:
+        - containerPort: 80
+
+
+

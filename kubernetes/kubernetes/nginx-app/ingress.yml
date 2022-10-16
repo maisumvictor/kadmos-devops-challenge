@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-app-routed
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: nginx-app-svc
+            port:
+              number: 80
+      - path: /nginx/*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: nginx-app-route
+            port:
+              number: 80

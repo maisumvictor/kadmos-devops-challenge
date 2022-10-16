@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nyan-cat-svc
+  namespace: nyan-cat
+spec:
+  selector:
+    app: nyan-cat
+  ports:
+  - port: 80
+    protocol: TCP
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}

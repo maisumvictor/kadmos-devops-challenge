@@ -1,0 +1,14 @@
+  - hosts: apache
+    become: true
+    tasks:
+      - name: Changing 000-defaults.conf to configure apache as ReverseProxy for k8s
+        copy:
+          force: yes
+          src: ReverseProxy.conf
+          dest: /etc/apache2/sites-available/000-default.conf
+          mode: 0644
+        notify:
+            - restart apache2
+    handlers:
+      - name: restart apache2
+        service: name=apache2 state=restarted

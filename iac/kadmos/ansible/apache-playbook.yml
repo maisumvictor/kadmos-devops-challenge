@@ -1,0 +1,113 @@
+  - hosts: apache
+    become: true
+    tasks:
+
+    ## Install apache2 and apache2 plugings
+      - name: install apache2
+        apt: name=apache2 update_cache=yes state=latest
+      
+      - name: install apache2-utils
+        apt: name=apache2-utils update_cache=yes state=latest
+      
+    ## mod-evasive installation to filter DOS attack
+      - name: install mod-evasise
+        apt: name=libapache2-mod-evasive update_cache=yes state=latest
+
+    ## Text changes in apache2.conf to allow the module to operate
+      - name: Apache2.conf add *.load
+        lineinfile:
+          path: /etc/apache2/apache2.conf
+          line: 'Include mods-enabled/*.load'
+        notify:
+          - restart apache2
+      
+      - name: Apache2.conf add *.conf
+        lineinfile:
+          path: /etc/apache2/apache2.conf
+          line: 'Include mods-enabled/*.conf'
+        notify:
+          - restart apache2
+
+
+#remover aqui
+      - name: apache2 listen on port 8081
+        lineinfile: dest=/etc/apache2/ports.conf regexp="^Listen 8081" line="Listen 80" state=present
+        notify:
+          - restart apache2
+
+      - name: apache2 virtualhost on port 8081
+        lineinfile: dest=/etc/apache2/sites-available/000-default.conf regexp="^<VirtualHost \*:8081>" line="<VirtualHost *:80>" state=present
+        notify:
+          - restart apache2
+      
+    ## Adding the mod_evasive file with the params to mitigate some DOS attacks
+      - name: Copy mod_evasive file config 
+        copy:
+          force: yes
+          src: mod-evasive.conf
+          dest: /etc/apache2/mods-enabled/evasive.conf
+          mode: 0644
+
+    ## Enabling modules already installed
+      - name: enabled mod_rewrite
+        apache2_module: name=rewrite state=present
+        notify:
+        - restart apache2
+      
+      - name: enabled proxy
+        apache2_module: name=proxy state=present
+        notify:
+        - restart apache2
+      
+      - name: enabled proxy_http
+        apache2_module: name=proxy_http state=present
+        notify:
+        - restart apache2
+      
+      - name: enabled proxy_balancer
+        apache2_module: name=proxy_balancer state=present
+        notify:
+        - restart apache2
+      
+      - name: enabled lbmethod_byrequests
+        apache2_module: name=lbmethod_byrequests state=present
+        notify:
+        - restart apache2
+      
+
+      
+      - name: enabled mod_evasive
+        apache2_module: name=evasive state=present
+        notify:
+        - restart apache2
+      
+      - name: enabled mod_evasive
+        apache2_module: name=evasive state=present
+        notify:
+        - restart apache2
+      
+
+
+    ## apache2 change initial page 
+
+      - name: Clone a github repository for index page
+        git:
+          repo: https://github.com/cristurm/nyan-cat
+          dest: /var/www/html/nyan-cat
+          clone: yes
+          update: yes
+      
+      - name: apache2 change index
+        lineinfile: 
+          dest: /etc/apache2/sites-enabled/000-default.conf
+          regexp: 'DocumentRoot' 
+          line: 'DocumentRoot /var/www/html/nyan-cat/'
+          state: present
+          backup: yes
+          backrefs: yes
+        notify:
+          - restart apache2
+      
+    handlers:
+      - name: restart apache2
+        service: name=apache2 state=restarted
