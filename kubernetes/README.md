@@ -17,7 +17,7 @@
 
 2. Run the nginx-app folder 
 
-`` kubectl apply -f app/namespace.yml ``
-`` kubectl apply -f app/deployment.yml ``
-`` kubectl apply -f app/service.yml ``
-`` kubectl apply -f app/ingress-resource.yml ``
+`` kubectl apply -f app/namespace.yml `` <br>
+`` kubectl apply -f app/deployment.yml ``<br>
+`` kubectl apply -f app/service.yml ``<br>
+`` kubectl apply -f app/ingress-resource.yml ``<br>
