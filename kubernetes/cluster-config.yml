@@ -17,4 +17,4 @@ nodes:
     hostPort: 443
     protocol: TCP
 
-    ### Just in case of running on Kind
+    ### Just in case of running over Kind
