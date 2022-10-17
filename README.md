@@ -17,7 +17,8 @@
 ## Tooling decision: 
 
 **Kubernetes** <br>
-In order to run the kubernetes I choose to use Kind. The cluster configuration can be found at the Kubernetes directory at get-start.md
+In order to run the kubernetes I choose to use GKE. But it possible to run over kind. 
+The config file for kind can be found here[kubernetes/cluster-config.yaml]
 
 **Terraform**
 Initialy I think to run terraform over GCP. 
